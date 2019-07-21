@@ -19,12 +19,18 @@ app.get("/", function (req, res) {
 });
 
 
-// your first API endpoint... 
-app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
+app.get("/api/timestamp/:datastring?",function(req,res){
+  let value = req.params.datastring;
+  let dateParsed = new Date(value);
+  let time = dateParsed.getTime();
+  let utcDate = dateParsed.toUTCString();
+  if(value === undefined){
+    time = new Date().getTime();
+    utcDate = new Date().toUTCString();
+    
+  }
+  res.json({unix: time, utc: utcDate});
 });
-
-
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
